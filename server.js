@@ -60,14 +60,16 @@ app.post("/search", function(req, res){
       instance.get(`/api/v2/entries/en-us/${input}`)
         .then(result => {
             console.log("59");
+            // console.log(result);
           const post = {
             term: input,
-            definition: result.data.results[0].lexicalEntries[0].entries[0].senses[0].definitions[0],
-            phrase: result.data.results[0].lexicalEntries[0].phrases[0].text,
-            sDefinition: result.data.results[0].lexicalEntries[0].entries[0].senses[0].shortDefinitions[0],
-            phrase2: result.data.results[0].lexicalEntries[0].phrases[3].text,
-            spell: result.data.results[0].lexicalEntries[0].entries[0].pronunciations[0].phoneticSpelling
+            definition: result.data.results[0]?.lexicalEntries[0]?.entries[0]?.senses[0]?.definitions[0],
+            phrase: result.data.results[0]?.lexicalEntries[0]?.phrases[0]?.text,
+            sDefinition: result.data.results[0]?.lexicalEntries[0]?.entries[0]?.senses[0]?.shortDefinitions[0],
+            phrase2: result.data.results[0]?.lexicalEntries[0]?.phrases[2]?.text,
+            spell: result.data.results[0]?.lexicalEntries[0]?.entries[0]?.pronunciations[0]?.phoneticSpelling
           }
+          console.log(post);
           console.log("65");
           Item.create(post, (err, data) => {
               console.log("66");
@@ -83,7 +85,12 @@ app.post("/search", function(req, res){
         console.log("75");
         //   res.status(200).console.log(result.data);
         })
-        .catch(err => res.send(err));
+        .catch(err => {
+          console.log(err);
+          res.json(err);
+          
+        });
+        
     }
     catch (err) {
       console.error(err);
